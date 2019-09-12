@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: say-deployment
+  labels:
+    app: say
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: say
+  template:
+    metadata:
+      labels:
+        app: say
+    spec:
+      containers:
+      - name: say
+        image: gcr.io/river-wave-252713/say
+        ports:
+        - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  selector:
+    app: say
+  ports:
+    - protocol: TCP
+      port: 8080
+  type: LoadBalancer
